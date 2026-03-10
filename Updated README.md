@@ -146,19 +146,6 @@ app.run(port=5001)   # try 5001 or 8080
 
 ---
 
-## 📞 Support
-
-**Developed by:**
-- Pavana V Reddy
-- Yeduginjala Likhitha
-- Ankita R Sonth
-- Nithya N
-
-**Guide:** Dr. S. Oswalt Manoj 
-**Institution:** Alliance School of Advanced Computing, Alliance University, Bengaluru
-
----
-
 ## 🔗 API Endpoints (For Developers)
 
 | Endpoint | Method | Description |
