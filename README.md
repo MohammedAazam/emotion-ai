@@ -21,6 +21,14 @@ EmotionAI_Client/
 ├── 📁 model/                       
 │   └── efficientnet_v2_s_finetuned.pth
 │
+├── 📁 datasets/                    ← Training data
+│   └── FER2013/
+│       ├── train/                  ← Training images (7 emotion folders)
+│       └── test/                   ← Test images (7 emotion folders)
+│
+├── 📁 train/                       ← Model training
+│   └── train_emotion_model.py      ← Full training script
+│
 ├── 📁 scripts/                     ← One-click launchers
 │   ├── setup_and_run.bat           ← Windows (double-click)
 │   └── setup_and_run.sh            ← Mac / Linux
@@ -104,11 +112,41 @@ http://localhost:5000
 
 | Property       | Value                        |
 |----------------|------------------------------|
-| Architecture   | EfficientNetV2-S             |
+| Architecture   | EfficientNetV2-S (timm)      |
 | Dataset        | FER2013 (35,887 images)      |
-| Test Accuracy  | 72.95%                       |
 | Input Size     | 224 × 224 px                 |
 | Framework      | PyTorch 2.0 + timm           |
+
+### 📊 Evaluation Results (FER2013 Test Set — 7,178 images)
+
+| Metric    | Score  |
+|-----------|--------|
+| Accuracy  | 72.95% |
+| Precision | 71.04% |
+| Recall    | 70.47% |
+| F1-Score  | 70.52% |
+
+> 🔁 With TTA (Test Time Augmentation, 5-view): **73.22% Accuracy**
+
+---
+
+## 🏋️ Training Your Own Model
+
+To retrain the model from scratch on your machine:
+
+```bash
+# 1. Install dependencies
+pip install timm albumentations opencv-python scikit-learn matplotlib torch torchvision
+
+# 2. Download FER2013 dataset and update paths in the script
+#    https://www.kaggle.com/datasets/msambare/fer2013
+#    Extract the Dataset to the Datasets folder
+
+# 3. Run training
+python train/train_emotion_model.py
+```
+
+The best model will be saved to `model/efficientnet_v2_s_finetuned.pth`.  
 
 ---
 
@@ -144,6 +182,11 @@ Use GPU for real-time speed
 app.run(port=5001)   # try 5001 or 8080
 ```
 
+**Out of memory during training:**
+```
+Reduce BATCH_SIZE from 32 to 16 in train_emotion_model.py
+```
+
 ---
 
 ## 🔗 API Endpoints (For Developers)
@@ -173,7 +216,7 @@ curl -X POST http://localhost:5000/predict_image \
   "all_probs": {
     "Angry": 0.01,
     "Happy": 0.94,
-    ...
+    "...": "..."
   }
 }
 ```
